@@ -34,8 +34,8 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate {
         
         // Setup sounds
         
-        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
-        AVAudioSession.sharedInstance().setActive(true, error: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleSilenceSecondaryAudioHintNotification", name: AVAudioSessionSilenceSecondaryAudioHintNotification, object: nil)
+        
         soundsPlaylist.reserveCapacity(3)
         
         for i in 0...2 {
@@ -43,7 +43,9 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate {
             soundsPlaylist.append(sound!)
         }
         
-        playCurrentSound()
+        if !AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint {
+            playCurrentSound()
+        }
     }
 
     override func shouldAutorotate() -> Bool {
@@ -71,8 +73,8 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate {
     
     func playCurrentSound() {
         var error: NSError?
-        
         audioPlayer = AVAudioPlayer(contentsOfURL: soundsPlaylist[currentSoundsIndex], error: &error)
+        
         if let audioPlayer = audioPlayer {
             audioPlayer.delegate = self
             audioPlayer.prepareToPlay()
@@ -85,5 +87,23 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool) {
         currentSoundsIndex = ++currentSoundsIndex % soundsPlaylist.count
         playCurrentSound()
+    }
+    
+    func handleSilenceSecondaryAudioHintNotification() {
+        if AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint {
+            if let audioPlayer = audioPlayer {
+                if audioPlayer.playing {
+                    audioPlayer.stop()
+                }
+            }
+        } else {
+            playCurrentSound()
+        }
+    }
+    
+    // MARK: -
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }
