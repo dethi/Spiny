@@ -7,9 +7,13 @@
 //
 
 import UIKit
+import AVFoundation
 import SpriteKit
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, AVAudioPlayerDelegate {
+    var audioPlayer: AVAudioPlayer?
+    var currentSoundsIndex = 0
+    var soundsPlaylist = [NSURL]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +31,19 @@ class GameViewController: UIViewController {
         scene.scaleMode = .AspectFill
         
         skView.presentScene(scene)
+        
+        // Setup sounds
+        
+        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
+        AVAudioSession.sharedInstance().setActive(true, error: nil)
+        soundsPlaylist.reserveCapacity(3)
+        
+        for i in 0...2 {
+            let sound = NSBundle.mainBundle().URLForResource("track_menu\(i)", withExtension: "caf")
+            soundsPlaylist.append(sound!)
+        }
+        
+        playCurrentSound()
     }
 
     override func shouldAutorotate() -> Bool {
@@ -48,5 +65,25 @@ class GameViewController: UIViewController {
 
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    // MARK: - Audio Player
+    
+    func playCurrentSound() {
+        var error: NSError?
+        
+        audioPlayer = AVAudioPlayer(contentsOfURL: soundsPlaylist[currentSoundsIndex], error: &error)
+        if let audioPlayer = audioPlayer {
+            audioPlayer.delegate = self
+            audioPlayer.prepareToPlay()
+            audioPlayer.play()
+        } else {
+            println(error)
+        }
+    }
+    
+    func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool) {
+        currentSoundsIndex = ++currentSoundsIndex % soundsPlaylist.count
+        playCurrentSound()
     }
 }

@@ -24,6 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let rightRotation = SKAction.rotateByAngle(-CGFloat(M_PI_2), duration: 0.2)
     let leftRotation = SKAction.rotateByAngle(CGFloat(M_PI_2), duration: 0.2)
+    let playRotateSound = SKAction.playSoundFileNamed("turn.caf", waitForCompletion: false)
     
     var score: UInt = 0 {
         didSet {
@@ -32,7 +33,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
         
         backgroundColor = UIColor(red:0.301, green:0.298, blue:0.309, alpha:1)
         physicsWorld.gravity = CGVector.zeroVector
@@ -134,13 +134,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        /* Called when a touch begins */
         
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
             
             colorSelector.runAction((location.x > frame.midX) ?
                 rightRotation : leftRotation)
+            colorSelector.runAction(playRotateSound)
         }
     }
    
