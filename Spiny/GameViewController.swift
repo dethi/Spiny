@@ -34,6 +34,7 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate {
         
         // Setup sounds
         
+        AVAudioSession.sharedInstance().setActive(true, error: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleSilenceSecondaryAudioHintNotification", name: AVAudioSessionSilenceSecondaryAudioHintNotification, object: nil)
         
         soundsPlaylist.reserveCapacity(3)

@@ -20,6 +20,10 @@
 		5DEF22A91AD91295008F8655 /* track_menu2.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5DEF22A41AD91295008F8655 /* track_menu2.caf */; };
 		5DEF22AA1AD91295008F8655 /* track_menu1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5DEF22A51AD91295008F8655 /* track_menu1.caf */; };
 		5DEF22AB1AD91295008F8655 /* turn.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5DEF22A61AD91295008F8655 /* turn.caf */; };
+		5DEF22AD1AD98A8E008F8655 /* CircleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEF22AC1AD98A8E008F8655 /* CircleNode.swift */; };
+		5DEF22AF1AD98AAF008F8655 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DEF22AE1AD98AAF008F8655 /* AVFoundation.framework */; };
+		5DEF22B11ADB2761008F8655 /* ColorSelectorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEF22B01ADB2761008F8655 /* ColorSelectorNode.swift */; };
+		5DEF22B31ADB3320008F8655 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEF22B21ADB3320008F8655 /* Utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +54,10 @@
 		5DEF22A41AD91295008F8655 /* track_menu2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = track_menu2.caf; sourceTree = "<group>"; };
 		5DEF22A51AD91295008F8655 /* track_menu1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = track_menu1.caf; sourceTree = "<group>"; };
 		5DEF22A61AD91295008F8655 /* turn.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = turn.caf; sourceTree = "<group>"; };
+		5DEF22AC1AD98A8E008F8655 /* CircleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleNode.swift; sourceTree = "<group>"; };
+		5DEF22AE1AD98AAF008F8655 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		5DEF22B01ADB2761008F8655 /* ColorSelectorNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectorNode.swift; sourceTree = "<group>"; };
+		5DEF22B21ADB3320008F8655 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DEF22AF1AD98AAF008F8655 /* AVFoundation.framework in Frameworks */,
 				5D7422111AD897D400F0B886 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,7 +104,10 @@
 			children = (
 				5D7421EC1AD8673000F0B886 /* AppDelegate.swift */,
 				5D7421F01AD8673000F0B886 /* GameScene.swift */,
+				5DEF22AC1AD98A8E008F8655 /* CircleNode.swift */,
+				5DEF22B01ADB2761008F8655 /* ColorSelectorNode.swift */,
 				5D7421F21AD8673000F0B886 /* GameViewController.swift */,
+				5DEF22B21ADB3320008F8655 /* Utility.swift */,
 				5D7421F41AD8673000F0B886 /* Main.storyboard */,
 				5D7421F71AD8673000F0B886 /* Images.xcassets */,
 				5DEF22A11AD91295008F8655 /* Audio */,
@@ -133,6 +145,7 @@
 		5D7422121AD89D4900F0B886 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5DEF22AE1AD98AAF008F8655 /* AVFoundation.framework */,
 				5D7422101AD897D400F0B886 /* GameKit.framework */,
 			);
 			name = Frameworks;
@@ -263,7 +276,10 @@
 			files = (
 				5D7421F11AD8673000F0B886 /* GameScene.swift in Sources */,
 				5D7421F31AD8673000F0B886 /* GameViewController.swift in Sources */,
+				5DEF22B31ADB3320008F8655 /* Utility.swift in Sources */,
 				5D7421ED1AD8673000F0B886 /* AppDelegate.swift in Sources */,
+				5DEF22B11ADB2761008F8655 /* ColorSelectorNode.swift in Sources */,
+				5DEF22AD1AD98A8E008F8655 /* CircleNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

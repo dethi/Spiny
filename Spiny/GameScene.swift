@@ -11,6 +11,33 @@ import SpriteKit
 let kSelectorCategory: UInt32   = 0x1 << 0
 let kCircleCategory: UInt32     = 0x1 << 1
 
+struct PathGroup {
+    let one: CGPath
+    let two: CGPath
+    let three: CGPath
+    let four: CGPath
+    
+    func getPath() -> CGPath {
+        switch (arc4random_uniform(4)) {
+        case 0:
+            return one
+        case 1:
+            return two
+        case 2:
+            return three
+        default:
+            return four
+        }
+    }
+}
+
+enum Color: Int {
+    case Green = 0
+    case Orange = 1
+    case Red = 2
+    case Blue = 3
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     let whiteColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1)
     let redColor = UIColor(red: 238, green: 90, blue: 79, alpha: 1)
@@ -19,12 +46,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let blueColor = UIColor(red: 97, green: 204, blue: 241, alpha: 1)
     
     var mainLayer: SKSpriteNode!
-    var colorSelector: SKSpriteNode!
+    var colorSelector: ColorSelectorNode!
     var scoreLabel: SKLabelNode!
-    
-    let rightRotation = SKAction.rotateByAngle(-CGFloat(M_PI_2), duration: 0.2)
-    let leftRotation = SKAction.rotateByAngle(CGFloat(M_PI_2), duration: 0.2)
-    let playRotateSound = SKAction.playSoundFileNamed("turn.caf", waitForCompletion: false)
+    var paths: PathGroup!
     
     var score: UInt = 0 {
         didSet {
@@ -43,11 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(mainLayer)
         
         // Setup the Color Selector
-        colorSelector = SKSpriteNode(imageNamed: "ColorSelector")
-        colorSelector.physicsBody = SKPhysicsBody(circleOfRadius: colorSelector.size.width * 0.5)
-        colorSelector.physicsBody?.dynamic = false
-        colorSelector.physicsBody?.categoryBitMask = kSelectorCategory
-        colorSelector.physicsBody?.contactTestBitMask = kCircleCategory
+        colorSelector = ColorSelectorNode.newColorSelector()
         mainLayer.addChild(colorSelector)
         
         // Setup the Path
@@ -115,6 +135,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let rotate = SKAction.rotateByAngle(CGFloat(M_PI), duration: 40)
         mainLayer.runAction(SKAction.repeatActionForever(rotate))
         
+        // Setup path structure
+        paths = PathGroup(one: topPath.bezierPathByReversingPath().CGPath,
+            two: rightPath.bezierPathByReversingPath().CGPath,
+            three: bottomPath.bezierPathByReversingPath().CGPath,
+            four: leftPath.bezierPathByReversingPath().CGPath)
+        
         // Setup score
         scoreLabel = SKLabelNode(text: "0")
         scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 60)
@@ -123,24 +149,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(scoreLabel)
         
         // Test
-        let circle = SKSpriteNode(imageNamed: "OrangeCircle")
-        circle.physicsBody = SKPhysicsBody(circleOfRadius: circle.size.width * 0.5)
-        circle.physicsBody?.categoryBitMask = kCircleCategory
-        circle.physicsBody?.collisionBitMask = 0
+        let circle = CircleNode.newCircleWithRandomColor()
+        circle.followsPath(paths.getPath(), speed: 50)
         mainLayer.addChild(circle)
         
-        let action = SKAction.followPath(topPath.bezierPathByReversingPath().CGPath, speed: 50)
-        circle.runAction(action)
+        let action = SKAction.runBlock { () -> Void in
+            let circle = CircleNode.newCircleWithRandomColor()
+            circle.followsPath(self.paths.getPath(), speed: 60)
+            self.mainLayer.addChild(circle)
+        }
+        runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.waitForDuration(3), action])))
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
-            
-            colorSelector.runAction((location.x > frame.midX) ?
-                rightRotation : leftRotation)
-            colorSelector.runAction(playRotateSound)
+            colorSelector.rotate((location.x > frame.midX) ? .Right : .Left)
         }
     }
    
@@ -161,9 +186,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if (bodyA.categoryBitMask == kSelectorCategory && bodyB.categoryBitMask == kCircleCategory) {
-            let removeCircle = SKAction.sequence([SKAction.fadeOutWithDuration(0.1), SKAction.removeFromParent()])
-            bodyB.node?.removeAllActions()
-            bodyB.node?.runAction(removeCircle)
+            if let circle = bodyB.node as? CircleNode {
+                let location = mainLayer.convertPoint(contact.contactPoint, fromNode: self)
+                
+                if circle.circleColor == colorSelector.colorAtPosition(location) {
+                    ++score
+                    circle.willArrive()
+                } else {
+                    // GameOver
+                    mainLayer.enumerateChildNodesWithName("circle", usingBlock: { (node, end) -> Void in
+                        node.removeAllActions()
+                    })
+                    
+                    mainLayer.removeAllActions()
+                    removeAllActions()
+                }
+            }
         }
     }
 }
