@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 class CircleNode: SKSpriteNode {
-    private let removeCircle = SKAction.sequence([
+    static let removeCircle = SKAction.sequence([
         SKAction.fadeOutWithDuration(0.1),
         SKAction.removeFromParent()
     ])
@@ -58,6 +58,6 @@ class CircleNode: SKSpriteNode {
     
     func willArrive() {
         removeAllActions()
-        runAction(removeCircle)
+        runAction(CircleNode.removeCircle)
     }
 }

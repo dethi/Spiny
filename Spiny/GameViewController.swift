@@ -9,23 +9,46 @@
 import UIKit
 import AVFoundation
 import SpriteKit
+import GameKit
 
-class GameViewController: UIViewController, AVAudioPlayerDelegate {
+let showGameCenterKey = "fr.dethi.Spiny.showGameCenter"
+let saveScoreKey = "fr.dethi.Spiny.saveScore"
+let canDisplayAdsKey = "fr.dethi.Spiny.canDisplatAds"
+let changeAudioSettingKey = "fr.dethi.Spiny.changeAudioSettings"
+
+class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterControllerDelegate {
+    var scene: GameScene!
+    
     var audioPlayer: AVAudioPlayer?
     var currentSoundsIndex = 0
     var soundsPlaylist = [NSURL]()
+    
+    var shouldDisplayAds = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Setup timer for Ads
+        
+        NSTimer.scheduledTimerWithTimeInterval(60 * 5, target: self, selector: "activateShouldDisplayAds", userInfo: nil, repeats: true)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "displayAds", name: canDisplayAdsKey, object: nil)
+        
+        // Setup Game Center
+        
+        authenticateLocalPlayer()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "showLeaderboards", name: showGameCenterKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveScore", name: saveScoreKey, object: nil)
 
-        let scene = GameScene()
+        // Setup SpriteKit Scene
+        
+        scene = GameScene()
         scene.size = view.frame.size
         
         let skView = self.view as! SKView
         
-        skView.showsFPS = true
-        skView.showsNodeCount = true
-        skView.showsDrawCount = true
+        //skView.showsFPS = true
+        //skView.showsNodeCount = true
+        //skView.showsDrawCount = true
         
         skView.ignoresSiblingOrder = true
         scene.scaleMode = .AspectFill
@@ -35,7 +58,8 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate {
         // Setup sounds
         
         AVAudioSession.sharedInstance().setActive(true, error: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleSilenceSecondaryAudioHintNotification", name: AVAudioSessionSilenceSecondaryAudioHintNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleAudioSetting", name: AVAudioSessionSilenceSecondaryAudioHintNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleAudioSetting", name: changeAudioSettingKey, object: nil)
         
         soundsPlaylist.reserveCapacity(3)
         
@@ -44,9 +68,7 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate {
             soundsPlaylist.append(sound!)
         }
         
-        if !AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint {
-            playCurrentSound()
-        }
+        handleAudioSetting()
     }
 
     override func shouldAutorotate() -> Bool {
@@ -90,19 +112,82 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate {
         playCurrentSound()
     }
     
-    func handleSilenceSecondaryAudioHintNotification() {
-        if AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint {
+    func handleAudioSetting() {
+        if AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint || !scene.playMusic {
             if let audioPlayer = audioPlayer {
                 if audioPlayer.playing {
                     audioPlayer.stop()
                 }
             }
-        } else {
+        } else if scene.playMusic {
             playCurrentSound()
         }
     }
     
+    // MARK: - Game Center
+    
+    func saveHighscore(score: UInt) {
+        if GKLocalPlayer.localPlayer().authenticated {
+            var scoreReporter = GKScore(leaderboardIdentifier: "spiny_high_score")
+            
+            scoreReporter.value = Int64(score)
+            var scoreArray: [GKScore] = [scoreReporter]
+            
+            GKScore.reportScores(scoreArray) {(error : NSError!) -> Void in
+                if error != nil {
+                    println(error)
+                }
+            }
+        }
+    }
+    
+    func showLeaderboards() {
+        var vc = self.view?.window?.rootViewController
+        var gc = GKGameCenterViewController()
+        gc.gameCenterDelegate = self
+        vc?.presentViewController(gc, animated: true, completion: nil)
+    }
+    
+    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController!)
+    {
+        gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func authenticateLocalPlayer(){
+        var localPlayer = GKLocalPlayer.localPlayer()
+        
+        localPlayer.authenticateHandler = {(viewController, error) -> Void in
+            if (viewController != nil) {
+                self.presentViewController(viewController, animated: true, completion: nil)
+            } else {
+                println(localPlayer.authenticated)
+            }
+        }
+    }
+    
     // MARK: -
+    
+    func activateShouldDisplayAds() {
+        shouldDisplayAds = true
+    }
+    
+    func displayAds() {
+        if shouldDisplayAds {
+            shouldDisplayAds = false
+            AdBuddiz.showAd()
+        }
+    }
+    
+    func saveScore() {
+        let score = scene.score
+        let currentHighScore = NSUserDefaults.standardUserDefaults().valueForKey("highScore") as? UInt
+        if score > currentHighScore {
+            saveHighscore(score)
+            scene.highScore = score
+            NSUserDefaults.standardUserDefaults().setValue(score, forKey: "highScore")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)

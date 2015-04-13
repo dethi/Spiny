@@ -38,8 +38,15 @@ enum Color: Int {
     case Blue = 3
 }
 
+enum SpinyState {
+    case Game
+    case GameEnded
+    case Menu
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    let whiteColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1)
+    let whiteColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+    let darkGreyColor = UIColor(red: 0.301, green: 0.298, blue: 0.309, alpha: 1)
     let redColor = UIColor(red: 238, green: 90, blue: 79, alpha: 1)
     let orangeColor = UIColor(red: 245, green: 163, blue: 49, alpha: 1)
     let greenColor = UIColor(red: 137, green: 201, blue: 98, alpha: 1)
@@ -50,15 +57,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoreLabel: SKLabelNode!
     var paths: PathGroup!
     
+    var menuLayer: SKSpriteNode!
+    var playButton: SKSpriteNode!
+    var bigColorSelector: SKSpriteNode!
+    var gameCenterButton: SKSpriteNode!
+    var highScoreLabel: SKLabelNode!
+    
+    var noMusicButton: SKSpriteNode!
+    var musicButton: SKSpriteNode!
+    
+    var currentState = SpinyState.Menu
+    
     var score: UInt = 0 {
         didSet {
             scoreLabel.text = "\(score)"
         }
     }
     
+    var highScore: UInt = 0 {
+        didSet {
+            highScoreLabel.text = "High Score: \(highScore)"
+        }
+    }
+    
+    var playMusic: Bool = true {
+        didSet {
+            if playMusic {
+                noMusicButton.hidden = true
+                musicButton.hidden = false
+            } else {
+                noMusicButton.hidden = false
+                musicButton.hidden = true
+            }
+            
+            NSUserDefaults.standardUserDefaults().setBool(playMusic, forKey: "playMusic")
+            NSNotificationCenter.defaultCenter().postNotificationName(changeAudioSettingKey, object: nil)
+        }
+    }
+    
     override func didMoveToView(view: SKView) {
         
-        backgroundColor = UIColor(red:0.301, green:0.298, blue:0.309, alpha:1)
+        backgroundColor = darkGreyColor
         physicsWorld.gravity = CGVector.zeroVector
         physicsWorld.contactDelegate = self
         
@@ -131,10 +170,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftPathNode.lineWidth = lineWidth
         mainLayer.addChild(leftPathNode)
         
-        // Rotate main layer
-        let rotate = SKAction.rotateByAngle(CGFloat(M_PI), duration: 40)
-        mainLayer.runAction(SKAction.repeatActionForever(rotate))
-        
         // Setup path structure
         paths = PathGroup(one: topPath.bezierPathByReversingPath().CGPath,
             two: rightPath.bezierPathByReversingPath().CGPath,
@@ -148,6 +183,59 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.fontColor = whiteColor
         addChild(scoreLabel)
         
+        // Setup menu
+        menuLayer = SKSpriteNode(color: darkGreyColor, size: size)
+        menuLayer.position = CGPoint(x: frame.midX, y: frame.midY)
+        menuLayer.zPosition = 1.0
+        addChild(menuLayer)
+        
+        bigColorSelector = SKSpriteNode(imageNamed: "BigColorSelector")
+        menuLayer.addChild(bigColorSelector)
+        
+        playButton = SKSpriteNode(imageNamed: "Play")
+        menuLayer.addChild(playButton)
+        
+        gameCenterButton = SKSpriteNode(imageNamed: "GameCenter")
+        gameCenterButton.position = CGPoint(x: menuLayer.size.width * 0.5 - gameCenterButton.size.width,
+            y: -menuLayer.size.height * 0.5 + gameCenterButton.size.height)
+        menuLayer.addChild(gameCenterButton)
+        
+        musicButton = SKSpriteNode(imageNamed: "Music")
+        noMusicButton = SKSpriteNode(imageNamed: "NoMusic")
+        let musicButtonPosition = CGPoint(x: -menuLayer.size.width * 0.5 + musicButton.size.width,
+            y: -menuLayer.size.height * 0.5 + musicButton.size.height)
+        musicButton.position = musicButtonPosition
+        noMusicButton.position = musicButtonPosition
+        menuLayer.addChild(musicButton)
+        menuLayer.addChild(noMusicButton)
+        
+        highScoreLabel = SKLabelNode(fontNamed: "DIN Alternate")
+        highScoreLabel.position = CGPoint(x: 0, y: -bigColorSelector.size.height * 0.7)
+        highScoreLabel.fontColor = whiteColor
+        highScoreLabel.fontSize = 24
+        menuLayer.addChild(highScoreLabel)
+        
+        let titleLabel = SKLabelNode(text: "Spiny")
+        titleLabel.position = CGPoint(x: 0, y: bigColorSelector.size.height * 0.75)
+        titleLabel.fontColor = whiteColor
+        titleLabel.fontSize = 50
+        titleLabel.fontName = "System"
+        menuLayer.addChild(titleLabel)
+        
+        highScore = NSUserDefaults.standardUserDefaults().valueForKey("highScore") as! UInt
+        playMusic = NSUserDefaults.standardUserDefaults().boolForKey("playMusic")
+    }
+    
+    func newGame() {
+        // Clean game
+        mainLayer.enumerateChildNodesWithName("circle", usingBlock: { (node, end) -> Void in
+            node.removeFromParent()
+        })
+        
+        // Rotate main layer
+        let rotate = SKAction.rotateByAngle(CGFloat(M_PI), duration: 40)
+        mainLayer.runAction(SKAction.repeatActionForever(rotate))
+        
         // Test
         let circle = CircleNode.newCircleWithRandomColor()
         circle.followsPath(paths.getPath(), speed: 50)
@@ -159,13 +247,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.mainLayer.addChild(circle)
         }
         runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.waitForDuration(3), action])))
+        
+        score = 0
+        currentState = .Game
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         
         for touch in (touches as! Set<UITouch>) {
-            let location = touch.locationInNode(self)
-            colorSelector.rotate((location.x > frame.midX) ? .Right : .Left)
+            switch (currentState) {
+            case .Menu:
+                let location = touch.locationInNode(menuLayer)
+                if playButton.containsPoint(location) {
+                    playButton.runAction(SKAction.rotateByAngle(CGFloat(M_PI * 2), duration: 0.5))
+                    bigColorSelector.runAction(SKAction.rotateByAngle(-CGFloat(M_PI * 2), duration: 0.5))
+                    
+                    menuLayer.runAction(SKAction.sequence([
+                        SKAction.waitForDuration(0.5),
+                        SKAction.fadeOutWithDuration(1)]))
+                    newGame()
+                } else if gameCenterButton.containsPoint(location) {
+                    let pulseOut = SKAction.scaleTo(1.15, duration: 0.15)
+                    let pulseIn = SKAction.scaleTo(1.0, duration: 0.15)
+                    let showGameCenter = SKAction.runBlock({ () -> Void in
+                        NSNotificationCenter.defaultCenter().postNotificationName(showGameCenterKey, object: nil)
+                    })
+                    
+                    gameCenterButton.runAction(SKAction.sequence([pulseOut, pulseIn, showGameCenter]))
+                } else if musicButton.containsPoint(location) {
+                    playMusic = !playMusic
+                }
+            case .Game:
+                let location = touch.locationInNode(self)
+                colorSelector.rotate((location.x > frame.midX) ? .Right : .Left)
+            case .GameEnded:
+                currentState = .Menu
+                scoreLabel.removeAllActions()
+                menuLayer.runAction(SKAction.fadeInWithDuration(0.7))
+                NSNotificationCenter.defaultCenter().postNotificationName(canDisplayAdsKey, object: nil)
+            }
         }
     }
    
@@ -197,9 +317,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     mainLayer.enumerateChildNodesWithName("circle", usingBlock: { (node, end) -> Void in
                         node.removeAllActions()
                     })
-                    
                     mainLayer.removeAllActions()
                     removeAllActions()
+                    
+                    let alpha = ceil(mainLayer.zRotation / CGFloat(M_PI_2)) * CGFloat(M_PI_2)
+                    mainLayer.runAction(SKAction.rotateToAngle(alpha, duration: 1.5))
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(saveScoreKey, object: nil)
+                    currentState = .GameEnded
+                    
+                    let pulseOut = SKAction.scaleTo(1.2, duration: 0.7)
+                    let pulseIn = SKAction.scaleTo(1.0, duration: 0.6)
+                    
+                    scoreLabel.runAction(SKAction.repeatActionForever(SKAction.sequence([pulseOut, pulseIn])))
                 }
             }
         }

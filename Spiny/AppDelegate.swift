@@ -14,10 +14,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
         AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
+        
+        AdBuddiz.setPublisherKey("d8b655a5-3085-4701-8123-b245d4f8963c")
+        AdBuddiz.setTestModeActive()
+        AdBuddiz.cacheAds()
+        
+        let settings = NSUserDefaults.standardUserDefaults()
+        let version = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
+        if settings.valueForKey("version") == nil {
+            // First launch
+            settings.setValue(version, forKey: "version")
+            settings.setValue(0, forKey: "highScore")
+            settings.setBool(true, forKey: "playMusic")
+        } else {
+            if (settings.valueForKey("version") as! String) == version {
+                // Same version
+            } else {
+                // Update
+                settings.setValue(version, forKey: "version")
+            }
+        }
         
         return true
     }

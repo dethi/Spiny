@@ -17,7 +17,6 @@ enum RotationDirection: Int {
 class ColorSelectorNode: SKSpriteNode {
     private let rightRotation = SKAction.rotateByAngle(-CGFloat(M_PI_2), duration: 0.2)
     private let leftRotation = SKAction.rotateByAngle(CGFloat(M_PI_2), duration: 0.2)
-    private let playRotateSound = SKAction.playSoundFileNamed("turn.caf", waitForCompletion: false)
     
     private var currentTopColor: Int = 0
     
@@ -39,7 +38,6 @@ class ColorSelectorNode: SKSpriteNode {
             runAction(leftRotation)
         }
         
-        runAction(playRotateSound)
         currentTopColor = mod(currentTopColor + direction.rawValue, 4)
     }
     

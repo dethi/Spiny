@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D62456A1ADBF4F8008BD450 /* AdBuddiz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D6245691ADBF4F8008BD450 /* AdBuddiz.framework */; };
+		5D62456C1ADBF50D008BD450 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D62456B1ADBF50D008BD450 /* SystemConfiguration.framework */; };
+		5D62456E1ADBF514008BD450 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D62456D1ADBF514008BD450 /* AdSupport.framework */; };
+		5D6245701ADBF519008BD450 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D62456F1ADBF519008BD450 /* StoreKit.framework */; };
 		5D7421ED1AD8673000F0B886 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7421EC1AD8673000F0B886 /* AppDelegate.swift */; };
 		5D7421F11AD8673000F0B886 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7421F01AD8673000F0B886 /* GameScene.swift */; };
 		5D7421F31AD8673000F0B886 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7421F21AD8673000F0B886 /* GameViewController.swift */; };
@@ -15,11 +19,9 @@
 		5D7421FB1AD8673000F0B886 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D7421F91AD8673000F0B886 /* LaunchScreen.xib */; };
 		5D7422071AD8673000F0B886 /* SpinyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7422061AD8673000F0B886 /* SpinyTests.swift */; };
 		5D7422111AD897D400F0B886 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D7422101AD897D400F0B886 /* GameKit.framework */; };
-		5DEF22A71AD91295008F8655 /* button.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5DEF22A21AD91295008F8655 /* button.caf */; };
 		5DEF22A81AD91295008F8655 /* track_menu0.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5DEF22A31AD91295008F8655 /* track_menu0.caf */; };
 		5DEF22A91AD91295008F8655 /* track_menu2.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5DEF22A41AD91295008F8655 /* track_menu2.caf */; };
 		5DEF22AA1AD91295008F8655 /* track_menu1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5DEF22A51AD91295008F8655 /* track_menu1.caf */; };
-		5DEF22AB1AD91295008F8655 /* turn.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5DEF22A61AD91295008F8655 /* turn.caf */; };
 		5DEF22AD1AD98A8E008F8655 /* CircleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEF22AC1AD98A8E008F8655 /* CircleNode.swift */; };
 		5DEF22AF1AD98AAF008F8655 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DEF22AE1AD98AAF008F8655 /* AVFoundation.framework */; };
 		5DEF22B11ADB2761008F8655 /* ColorSelectorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEF22B01ADB2761008F8655 /* ColorSelectorNode.swift */; };
@@ -37,6 +39,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5D6245691ADBF4F8008BD450 /* AdBuddiz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AdBuddiz.framework; sourceTree = "<group>"; };
+		5D62456B1ADBF50D008BD450 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		5D62456D1ADBF514008BD450 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		5D62456F1ADBF519008BD450 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		5D6245711ADBF555008BD450 /* Spiny-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Spiny-Bridging-Header.h"; sourceTree = "<group>"; };
 		5D7421E71AD8673000F0B886 /* Spiny.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spiny.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D7421EB1AD8673000F0B886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D7421EC1AD8673000F0B886 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -49,11 +56,9 @@
 		5D7422051AD8673000F0B886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D7422061AD8673000F0B886 /* SpinyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinyTests.swift; sourceTree = "<group>"; };
 		5D7422101AD897D400F0B886 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
-		5DEF22A21AD91295008F8655 /* button.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = button.caf; sourceTree = "<group>"; };
 		5DEF22A31AD91295008F8655 /* track_menu0.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = track_menu0.caf; sourceTree = "<group>"; };
 		5DEF22A41AD91295008F8655 /* track_menu2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = track_menu2.caf; sourceTree = "<group>"; };
 		5DEF22A51AD91295008F8655 /* track_menu1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = track_menu1.caf; sourceTree = "<group>"; };
-		5DEF22A61AD91295008F8655 /* turn.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = turn.caf; sourceTree = "<group>"; };
 		5DEF22AC1AD98A8E008F8655 /* CircleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleNode.swift; sourceTree = "<group>"; };
 		5DEF22AE1AD98AAF008F8655 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5DEF22B01ADB2761008F8655 /* ColorSelectorNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectorNode.swift; sourceTree = "<group>"; };
@@ -65,6 +70,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D6245701ADBF519008BD450 /* StoreKit.framework in Frameworks */,
+				5D62456E1ADBF514008BD450 /* AdSupport.framework in Frameworks */,
+				5D62456C1ADBF50D008BD450 /* SystemConfiguration.framework in Frameworks */,
+				5D62456A1ADBF4F8008BD450 /* AdBuddiz.framework in Frameworks */,
 				5DEF22AF1AD98AAF008F8655 /* AVFoundation.framework in Frameworks */,
 				5D7422111AD897D400F0B886 /* GameKit.framework in Frameworks */,
 			);
@@ -108,10 +117,9 @@
 				5DEF22B01ADB2761008F8655 /* ColorSelectorNode.swift */,
 				5D7421F21AD8673000F0B886 /* GameViewController.swift */,
 				5DEF22B21ADB3320008F8655 /* Utility.swift */,
-				5D7421F41AD8673000F0B886 /* Main.storyboard */,
+				5D7421F91AD8673000F0B886 /* LaunchScreen.xib */,
 				5D7421F71AD8673000F0B886 /* Images.xcassets */,
 				5DEF22A11AD91295008F8655 /* Audio */,
-				5D7421F91AD8673000F0B886 /* LaunchScreen.xib */,
 				5D7421EA1AD8673000F0B886 /* Supporting Files */,
 			);
 			path = Spiny;
@@ -120,6 +128,8 @@
 		5D7421EA1AD8673000F0B886 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5D7421F41AD8673000F0B886 /* Main.storyboard */,
+				5D6245711ADBF555008BD450 /* Spiny-Bridging-Header.h */,
 				5D7421EB1AD8673000F0B886 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -145,6 +155,10 @@
 		5D7422121AD89D4900F0B886 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5D62456F1ADBF519008BD450 /* StoreKit.framework */,
+				5D62456D1ADBF514008BD450 /* AdSupport.framework */,
+				5D62456B1ADBF50D008BD450 /* SystemConfiguration.framework */,
+				5D6245691ADBF4F8008BD450 /* AdBuddiz.framework */,
 				5DEF22AE1AD98AAF008F8655 /* AVFoundation.framework */,
 				5D7422101AD897D400F0B886 /* GameKit.framework */,
 			);
@@ -154,11 +168,9 @@
 		5DEF22A11AD91295008F8655 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				5DEF22A21AD91295008F8655 /* button.caf */,
 				5DEF22A31AD91295008F8655 /* track_menu0.caf */,
 				5DEF22A51AD91295008F8655 /* track_menu1.caf */,
 				5DEF22A41AD91295008F8655 /* track_menu2.caf */,
-				5DEF22A61AD91295008F8655 /* turn.caf */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -250,11 +262,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D7421FB1AD8673000F0B886 /* LaunchScreen.xib in Resources */,
-				5DEF22AB1AD91295008F8655 /* turn.caf in Resources */,
 				5DEF22A91AD91295008F8655 /* track_menu2.caf in Resources */,
 				5DEF22AA1AD91295008F8655 /* track_menu1.caf in Resources */,
 				5D7421F81AD8673000F0B886 /* Images.xcassets in Resources */,
-				5DEF22A71AD91295008F8655 /* button.caf in Resources */,
 				5DEF22A81AD91295008F8655 /* track_menu0.caf in Resources */,
 				5D7421F61AD8673000F0B886 /* Main.storyboard in Resources */,
 			);
@@ -406,12 +416,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Spiny/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Spiny/Spiny-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -419,12 +436,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Spiny/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Spiny/Spiny-Bridging-Header.h";
 			};
 			name = Release;
 		};

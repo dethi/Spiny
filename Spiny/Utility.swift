@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SpriteKit
 
 func mod(x: Int, m: Int) -> Int {
     let r = x % m
