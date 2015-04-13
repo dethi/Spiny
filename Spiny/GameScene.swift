@@ -66,6 +66,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var noMusicButton: SKSpriteNode!
     var musicButton: SKSpriteNode!
     
+    var lastAddedTime = 0.0
+    
     var currentState = SpinyState.Menu
     
     var score: UInt = 0 {
@@ -179,7 +181,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Setup score
         scoreLabel = SKLabelNode(text: "0")
         scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 60)
-        scoreLabel.fontName = "DIN Alternate"
+        scoreLabel.fontName = "DINAlternate-Bold"
         scoreLabel.fontColor = whiteColor
         addChild(scoreLabel)
         
@@ -209,7 +211,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         menuLayer.addChild(musicButton)
         menuLayer.addChild(noMusicButton)
         
-        highScoreLabel = SKLabelNode(fontNamed: "DIN Alternate")
+        highScoreLabel = SKLabelNode(fontNamed: "DINAlternate-Bold ")
         highScoreLabel.position = CGPoint(x: 0, y: -bigColorSelector.size.height * 0.7)
         highScoreLabel.fontColor = whiteColor
         highScoreLabel.fontSize = 24
@@ -219,7 +221,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         titleLabel.position = CGPoint(x: 0, y: bigColorSelector.size.height * 0.75)
         titleLabel.fontColor = whiteColor
         titleLabel.fontSize = 50
-        titleLabel.fontName = "System"
+        titleLabel.fontName = "System-Regular"
         menuLayer.addChild(titleLabel)
         
         highScore = NSUserDefaults.standardUserDefaults().valueForKey("highScore") as! UInt
@@ -233,22 +235,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         })
         
         // Rotate main layer
-        let rotate = SKAction.rotateByAngle(CGFloat(M_PI), duration: 40)
-        mainLayer.runAction(SKAction.repeatActionForever(rotate))
+        let rotate = SKAction.rotateByAngle(CGFloat(M_PI), duration: 60)
+        mainLayer.runAction(SKAction.repeatActionForever(rotate), withKey: "rotation")
         
-        // Test
-        let circle = CircleNode.newCircleWithRandomColor()
-        circle.followsPath(paths.getPath(), speed: 50)
-        mainLayer.addChild(circle)
+        let startGame = SKAction.sequence([
+            SKAction.runBlock { self.scoreLabel.text = "Go !" },
+            SKAction.waitForDuration(2),
+            SKAction.runBlock { self.score = 0 }
+            ])
+        runAction(startGame)
         
-        let action = SKAction.runBlock { () -> Void in
-            let circle = CircleNode.newCircleWithRandomColor()
-            circle.followsPath(self.paths.getPath(), speed: 60)
-            self.mainLayer.addChild(circle)
-        }
-        runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.waitForDuration(3), action])))
-        
-        score = 0
+        lastAddedTime = 0.0
         currentState = .Game
     }
     
@@ -290,7 +287,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
    
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+        if currentState == .Game {
+            let elapsedTime = currentTime - lastAddedTime
+            
+            if (score < 10) {
+                if elapsedTime > (2 - Double(score) / 20) {
+                    addNewCircle(100)
+                    lastAddedTime = currentTime
+                }
+            } else if (score < 20) {
+                if elapsedTime > 1.5 {
+                    addNewCircle(100 + CGFloat(score) - 10)
+                    mainLayer.actionForKey("rotation")?.speed += 0.07
+                    lastAddedTime = currentTime
+                }
+            } else if (score < 30) {
+                if elapsedTime > (1.5 - Double(score - 20) / 40) {
+                    addNewCircle(110)
+                    lastAddedTime = currentTime
+                    mainLayer.actionForKey("rotation")?.speed += 0.12
+                }
+            } else {
+                if elapsedTime > 1 {
+                    addNewCircle(110 + CGFloat(score) / 20)
+                    lastAddedTime = currentTime
+                }
+            }
+        }     
+    }
+    
+    func addNewCircle(speed: CGFloat) {
+        let circle = CircleNode.newCircleWithRandomColor()
+        circle.followsPath(paths.getPath(), speed: speed)
+        mainLayer.addChild(circle)
     }
     
     func didBeginContact(contact: SKPhysicsContact) {        

@@ -18,9 +18,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
         
+        // Ads
+        
         AdBuddiz.setPublisherKey("d8b655a5-3085-4701-8123-b245d4f8963c")
-        AdBuddiz.setTestModeActive()
+        //AdBuddiz.setTestModeActive()
         AdBuddiz.cacheAds()
+        
+        // Google Analytics
+        
+        //GAI.sharedInstance().logger.logLevel = GAILogLevel.Verbose
+        GAI.sharedInstance().dispatchInterval = 60
+        GAI.sharedInstance().trackerWithTrackingId("UA-9595975-18")
+        
+        // Settings
         
         let settings = NSUserDefaults.standardUserDefaults()
         let version = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String

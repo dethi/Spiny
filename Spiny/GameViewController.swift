@@ -16,7 +16,7 @@ let saveScoreKey = "fr.dethi.Spiny.saveScore"
 let canDisplayAdsKey = "fr.dethi.Spiny.canDisplatAds"
 let changeAudioSettingKey = "fr.dethi.Spiny.changeAudioSettings"
 
-class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterControllerDelegate {
+class GameViewController: GAITrackedViewController, AVAudioPlayerDelegate, GKGameCenterControllerDelegate {
     var scene: GameScene!
     
     var audioPlayer: AVAudioPlayer?
@@ -69,6 +69,13 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
         }
         
         handleAudioSetting()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Setup for Google Analytics
+        screenName = "GameView"
     }
 
     override func shouldAutorotate() -> Bool {
@@ -159,8 +166,6 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
         localPlayer.authenticateHandler = {(viewController, error) -> Void in
             if (viewController != nil) {
                 self.presentViewController(viewController, animated: true, completion: nil)
-            } else {
-                println(localPlayer.authenticated)
             }
         }
     }

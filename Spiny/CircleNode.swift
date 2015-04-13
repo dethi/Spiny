@@ -52,7 +52,7 @@ class CircleNode: SKSpriteNode {
     }
     
     func followsPath(path: CGPath, speed: CGFloat){
-        let action = SKAction.followPath(path, speed: 50)
+        let action = SKAction.followPath(path, speed: speed)
         runAction(action)
     }
     
