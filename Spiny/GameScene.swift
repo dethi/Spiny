@@ -67,7 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var musicButton: SKSpriteNode!
     
     var lastAddedTime = 0.0
-    
+    var blockInteraction = true
     var currentState = SpinyState.Menu
     
     var score: UInt = 0 {
@@ -278,10 +278,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let location = touch.locationInNode(self)
                 colorSelector.rotate((location.x > frame.midX) ? .Right : .Left)
             case .GameEnded:
-                currentState = .Menu
-                scoreLabel.removeAllActions()
-                menuLayer.runAction(SKAction.fadeInWithDuration(0.7))
-                NSNotificationCenter.defaultCenter().postNotificationName(canDisplayAdsKey, object: nil)
+                if !blockInteraction {
+                    blockInteraction = true
+                    currentState = .Menu
+                    scoreLabel.removeAllActions()
+                    menuLayer.runAction(SKAction.fadeInWithDuration(0.7))
+                    NSNotificationCenter.defaultCenter().postNotificationName(canDisplayAdsKey, object: nil)
+                }
             }
         }
     }
@@ -291,25 +294,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let elapsedTime = currentTime - lastAddedTime
             
             if (score < 10) {
-                if elapsedTime > (2 - Double(score) / 20) {
-                    addNewCircle(100)
-                    lastAddedTime = currentTime
-                }
-            } else if (score < 20) {
                 if elapsedTime > 1.5 {
-                    addNewCircle(100 + CGFloat(score) - 10)
+                    addNewCircle(100 + CGFloat(score))
                     mainLayer.actionForKey("rotation")?.speed += 0.07
                     lastAddedTime = currentTime
                 }
-            } else if (score < 30) {
-                if elapsedTime > (1.5 - Double(score - 20) / 40) {
+            } else if (score < 20) {
+                if elapsedTime > (1.5 - Double(score - 10) / 40) {
                     addNewCircle(110)
+                    mainLayer.actionForKey("rotation")?.speed += 0.15
                     lastAddedTime = currentTime
-                    mainLayer.actionForKey("rotation")?.speed += 0.12
                 }
             } else {
-                if elapsedTime > 1 {
-                    addNewCircle(110 + CGFloat(score) / 20)
+                if elapsedTime > 1.1 {
+                    addNewCircle(110 + CGFloat(score) / 15)
                     lastAddedTime = currentTime
                 }
             }
@@ -350,7 +348,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     removeAllActions()
                     
                     let alpha = ceil(mainLayer.zRotation / CGFloat(M_PI_2)) * CGFloat(M_PI_2)
-                    mainLayer.runAction(SKAction.rotateToAngle(alpha, duration: 1.5))
+                    mainLayer.runAction(SKAction.sequence([
+                        SKAction.rotateToAngle(alpha, duration: 1.2),
+                        SKAction.runBlock { self.blockInteraction = false }
+                    ]))
                     
                     NSNotificationCenter.defaultCenter().postNotificationName(saveScoreKey, object: nil)
                     currentState = .GameEnded
