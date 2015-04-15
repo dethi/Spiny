@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Ads
         
         AdBuddiz.setPublisherKey("d8b655a5-3085-4701-8123-b245d4f8963c")
-        //    AdBuddiz.setTestModeActive()
+        //AdBuddiz.setTestModeActive()
         AdBuddiz.cacheAds()
         
         // Google Analytics

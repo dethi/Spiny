@@ -7,12 +7,12 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "GameCenter@2x.png"
+      "filename" : "Leaderboard@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "GameCenter@3x.png"
+      "filename" : "Leaderboard@3x.png"
     }
   ],
   "info" : {

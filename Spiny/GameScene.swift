@@ -197,7 +197,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playButton = SKSpriteNode(imageNamed: "Play")
         menuLayer.addChild(playButton)
         
-        gameCenterButton = SKSpriteNode(imageNamed: "GameCenter")
+        gameCenterButton = SKSpriteNode(imageNamed: "Leaderboard")
         gameCenterButton.position = CGPoint(x: menuLayer.size.width * 0.5 - gameCenterButton.size.width,
             y: -menuLayer.size.height * 0.5 + gameCenterButton.size.height)
         menuLayer.addChild(gameCenterButton)
