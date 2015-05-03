@@ -24,12 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //AdBuddiz.setTestModeActive()
         AdBuddiz.cacheAds()
         
-        // Google Analytics
-        
-        //GAI.sharedInstance().logger.logLevel = GAILogLevel.Verbose
-        GAI.sharedInstance().dispatchInterval = 60
-        GAI.sharedInstance().trackerWithTrackingId("UA-9595975-18")
-        
         // Settings
         
         let settings = NSUserDefaults.standardUserDefaults()

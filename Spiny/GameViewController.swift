@@ -16,7 +16,7 @@ let saveScoreKey = "fr.dethi.Spiny.saveScore"
 let canDisplayAdsKey = "fr.dethi.Spiny.canDisplatAds"
 let changeAudioSettingKey = "fr.dethi.Spiny.changeAudioSettings"
 
-class GameViewController: GAITrackedViewController, AVAudioPlayerDelegate, GKGameCenterControllerDelegate {
+class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterControllerDelegate {
     var scene: GameScene!
     
     var audioPlayer: AVAudioPlayer?
@@ -71,13 +71,6 @@ class GameViewController: GAITrackedViewController, AVAudioPlayerDelegate, GKGam
         handleAudioSetting()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Setup for Google Analytics
-        screenName = "GameView"
-    }
-
     override func shouldAutorotate() -> Bool {
         return true
     }
@@ -133,7 +126,7 @@ class GameViewController: GAITrackedViewController, AVAudioPlayerDelegate, GKGam
     
     // MARK: - Game Center
     
-    func saveHighscore(score: UInt) {
+    func saveScore(score: UInt) {
         if GKLocalPlayer.localPlayer().authenticated {
             var scoreReporter = GKScore(leaderboardIdentifier: "spiny_high_score")
             
@@ -185,9 +178,10 @@ class GameViewController: GAITrackedViewController, AVAudioPlayerDelegate, GKGam
     
     func saveScore() {
         let score = scene.score
+        saveScore(score)
+        
         let currentHighScore = NSUserDefaults.standardUserDefaults().valueForKey("highScore") as? UInt
         if score > currentHighScore {
-            saveHighscore(score)
             scene.highScore = score
             NSUserDefaults.standardUserDefaults().setValue(score, forKey: "highScore")
             NSUserDefaults.standardUserDefaults().synchronize()

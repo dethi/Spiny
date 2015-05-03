@@ -7,7 +7,5 @@
 
 #import <Foundation/Foundation.h>
 #import <AdBuddiz/AdBuddiz.h>
-#import "GAI.h"
-#import "GAILogger.h"
 
 #endif

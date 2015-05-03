@@ -235,6 +235,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         })
         
         // Rotate main layer
+        score = 0
+        
         let rotate = SKAction.rotateByAngle(CGFloat(M_PI), duration: 60)
         mainLayer.runAction(SKAction.repeatActionForever(rotate), withKey: "rotation")
         
