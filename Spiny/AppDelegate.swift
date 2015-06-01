@@ -18,12 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
         
-        // Ads
-        
-        AdBuddiz.setPublisherKey("d8b655a5-3085-4701-8123-b245d4f8963c")
-        //AdBuddiz.setTestModeActive()
-        AdBuddiz.cacheAds()
-        
         // Settings
         
         let settings = NSUserDefaults.standardUserDefaults()

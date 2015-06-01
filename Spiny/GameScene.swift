@@ -285,7 +285,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     currentState = .Menu
                     scoreLabel.removeAllActions()
                     menuLayer.runAction(SKAction.fadeInWithDuration(0.7))
-                    NSNotificationCenter.defaultCenter().postNotificationName(canDisplayAdsKey, object: nil)
                 }
             }
         }

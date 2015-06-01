@@ -13,7 +13,6 @@ import GameKit
 
 let showGameCenterKey = "fr.dethi.Spiny.showGameCenter"
 let saveScoreKey = "fr.dethi.Spiny.saveScore"
-let canDisplayAdsKey = "fr.dethi.Spiny.canDisplatAds"
 let changeAudioSettingKey = "fr.dethi.Spiny.changeAudioSettings"
 
 class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterControllerDelegate {
@@ -22,16 +21,9 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
     var audioPlayer: AVAudioPlayer?
     var currentSoundsIndex = 0
     var soundsPlaylist = [NSURL]()
-    
-    var shouldDisplayAds = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Setup timer for Ads
-        
-        NSTimer.scheduledTimerWithTimeInterval(60 * 5, target: self, selector: "activateShouldDisplayAds", userInfo: nil, repeats: true)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "displayAds", name: canDisplayAdsKey, object: nil)
         
         // Setup Game Center
         
@@ -164,17 +156,6 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
     }
     
     // MARK: -
-    
-    func activateShouldDisplayAds() {
-        shouldDisplayAds = true
-    }
-    
-    func displayAds() {
-        if shouldDisplayAds {
-            shouldDisplayAds = false
-            AdBuddiz.showAd()
-        }
-    }
     
     func saveScore() {
         let score = scene.score

@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5D62456A1ADBF4F8008BD450 /* AdBuddiz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D6245691ADBF4F8008BD450 /* AdBuddiz.framework */; };
-		5D62456C1ADBF50D008BD450 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D62456B1ADBF50D008BD450 /* SystemConfiguration.framework */; };
-		5D62456E1ADBF514008BD450 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D62456D1ADBF514008BD450 /* AdSupport.framework */; };
-		5D6245701ADBF519008BD450 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D62456F1ADBF519008BD450 /* StoreKit.framework */; };
 		5D7421ED1AD8673000F0B886 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7421EC1AD8673000F0B886 /* AppDelegate.swift */; };
 		5D7421F11AD8673000F0B886 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7421F01AD8673000F0B886 /* GameScene.swift */; };
 		5D7421F31AD8673000F0B886 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7421F21AD8673000F0B886 /* GameViewController.swift */; };
@@ -39,11 +35,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5D6245691ADBF4F8008BD450 /* AdBuddiz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AdBuddiz.framework; sourceTree = "<group>"; };
-		5D62456B1ADBF50D008BD450 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		5D62456D1ADBF514008BD450 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		5D62456F1ADBF519008BD450 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		5D6245711ADBF555008BD450 /* Spiny-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Spiny-Bridging-Header.h"; sourceTree = "<group>"; };
 		5D7421E71AD8673000F0B886 /* Spiny.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spiny.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D7421EB1AD8673000F0B886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D7421EC1AD8673000F0B886 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -70,10 +61,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D62456C1ADBF50D008BD450 /* SystemConfiguration.framework in Frameworks */,
-				5D6245701ADBF519008BD450 /* StoreKit.framework in Frameworks */,
-				5D62456E1ADBF514008BD450 /* AdSupport.framework in Frameworks */,
-				5D62456A1ADBF4F8008BD450 /* AdBuddiz.framework in Frameworks */,
 				5DEF22AF1AD98AAF008F8655 /* AVFoundation.framework in Frameworks */,
 				5D7422111AD897D400F0B886 /* GameKit.framework in Frameworks */,
 			);
@@ -129,7 +116,6 @@
 			isa = PBXGroup;
 			children = (
 				5D7421F41AD8673000F0B886 /* Main.storyboard */,
-				5D6245711ADBF555008BD450 /* Spiny-Bridging-Header.h */,
 				5D7421EB1AD8673000F0B886 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -155,10 +141,6 @@
 		5D7422121AD89D4900F0B886 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5D62456F1ADBF519008BD450 /* StoreKit.framework */,
-				5D62456D1ADBF514008BD450 /* AdSupport.framework */,
-				5D62456B1ADBF50D008BD450 /* SystemConfiguration.framework */,
-				5D6245691ADBF4F8008BD450 /* AdBuddiz.framework */,
 				5DEF22AE1AD98AAF008F8655 /* AVFoundation.framework */,
 				5D7422101AD897D400F0B886 /* GameKit.framework */,
 			);
@@ -433,8 +415,9 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Spiny/Spiny-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -459,7 +442,8 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Spiny/Spiny-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
