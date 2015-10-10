@@ -47,9 +47,11 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
         
         skView.presentScene(scene)
         
-        // Setup sounds
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch _ {
+        }
         
-        AVAudioSession.sharedInstance().setActive(true, error: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleAudioSetting", name: AVAudioSessionSilenceSecondaryAudioHintNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleAudioSetting", name: changeAudioSettingKey, object: nil)
         
@@ -67,11 +69,11 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
         return true
     }
 
-    override func supportedInterfaceOrientations() -> Int {
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+            return UIInterfaceOrientationMask.AllButUpsideDown
         } else {
-            return Int(UIInterfaceOrientationMask.All.rawValue)
+            return UIInterfaceOrientationMask.All
         }
     }
 
@@ -87,19 +89,14 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
     // MARK: - Audio Player
     
     func playCurrentSound() {
-        var error: NSError?
-        audioPlayer = AVAudioPlayer(contentsOfURL: soundsPlaylist[currentSoundsIndex], error: &error)
-        
-        if let audioPlayer = audioPlayer {
+        if let audioPlayer = try? AVAudioPlayer(contentsOfURL: soundsPlaylist[currentSoundsIndex]) {
             audioPlayer.delegate = self
             audioPlayer.prepareToPlay()
             audioPlayer.play()
-        } else {
-            println(error)
         }
     }
     
-    func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool) {
+    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
         currentSoundsIndex = ++currentSoundsIndex % soundsPlaylist.count
         playCurrentSound()
     }
@@ -120,37 +117,37 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
     
     func saveScore(score: UInt) {
         if GKLocalPlayer.localPlayer().authenticated {
-            var scoreReporter = GKScore(leaderboardIdentifier: "spiny_high_score")
+            let scoreReporter = GKScore(leaderboardIdentifier: "spiny_high_score")
             
             scoreReporter.value = Int64(score)
-            var scoreArray: [GKScore] = [scoreReporter]
+            let scoreArray: [GKScore] = [scoreReporter]
             
-            GKScore.reportScores(scoreArray) {(error : NSError!) -> Void in
+            GKScore.reportScores(scoreArray) {(error : NSError?) -> Void in
                 if error != nil {
-                    println(error)
+                    print(error)
                 }
             }
         }
     }
     
     func showLeaderboards() {
-        var vc = self.view?.window?.rootViewController
-        var gc = GKGameCenterViewController()
+        let vc = self.view?.window?.rootViewController
+        let gc = GKGameCenterViewController()
         gc.gameCenterDelegate = self
         vc?.presentViewController(gc, animated: true, completion: nil)
     }
     
-    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController!)
+    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController)
     {
         gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func authenticateLocalPlayer(){
-        var localPlayer = GKLocalPlayer.localPlayer()
+        let localPlayer = GKLocalPlayer.localPlayer()
         
         localPlayer.authenticateHandler = {(viewController, error) -> Void in
             if (viewController != nil) {
-                self.presentViewController(viewController, animated: true, completion: nil)
+                self.presentViewController(viewController!, animated: true, completion: nil)
             }
         }
     }

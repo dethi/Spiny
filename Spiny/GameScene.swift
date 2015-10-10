@@ -100,7 +100,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMoveToView(view: SKView) {
         
         backgroundColor = darkGreyColor
-        physicsWorld.gravity = CGVector.zeroVector
+        physicsWorld.gravity = CGVector.zero
         physicsWorld.contactDelegate = self
         
         mainLayer = SKSpriteNode(color: UIColor.clearColor(), size: frame.size)
@@ -129,7 +129,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let topPathNode = SKShapeNode(path: topPath.CGPath)
         topPathNode.strokeColor = whiteColor
-        topPathNode.lineCap = kCGLineCapRound
+        topPathNode.lineCap = CGLineCap.Round
         topPathNode.lineWidth = lineWidth
         mainLayer.addChild(topPathNode)
         
@@ -142,7 +142,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let bottomPathNode = SKShapeNode(path: bottomPath.CGPath)
         bottomPathNode.strokeColor = whiteColor
-        bottomPathNode.lineCap = kCGLineCapRound
+        bottomPathNode.lineCap = CGLineCap.Round
         bottomPathNode.lineWidth = lineWidth
         mainLayer.addChild(bottomPathNode)
         
@@ -155,7 +155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let rightPathNode = SKShapeNode(path: rightPath.CGPath)
         rightPathNode.strokeColor = whiteColor
-        rightPathNode.lineCap = kCGLineCapRound
+        rightPathNode.lineCap = CGLineCap.Round
         rightPathNode.lineWidth = lineWidth
         mainLayer.addChild(rightPathNode)
         
@@ -168,7 +168,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let leftPathNode = SKShapeNode(path: leftPath.CGPath)
         leftPathNode.strokeColor = whiteColor
-        leftPathNode.lineCap = kCGLineCapRound
+        leftPathNode.lineCap = CGLineCap.Round
         leftPathNode.lineWidth = lineWidth
         mainLayer.addChild(leftPathNode)
         
@@ -251,9 +251,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         currentState = .Game
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        for touch in (touches as! Set<UITouch>) {
+        for touch in touches {
             switch (currentState) {
             case .Menu:
                 let location = touch.locationInNode(menuLayer)

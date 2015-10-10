@@ -38,7 +38,7 @@ class ColorSelectorNode: SKSpriteNode {
             runAction(leftRotation)
         }
         
-        currentTopColor = mod(currentTopColor + direction.rawValue, 4)
+        currentTopColor = mod(currentTopColor + direction.rawValue, m: 4)
     }
     
     func colorAtPosition(position: CGPoint) -> Color {
@@ -53,7 +53,7 @@ class ColorSelectorNode: SKSpriteNode {
             --color
         }
         
-        switch (mod(color, 4)) {
+        switch (mod(color, m: 4)) {
         case 0:
             return Color.Green
         case 1:
