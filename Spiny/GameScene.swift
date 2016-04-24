@@ -338,7 +338,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let location = mainLayer.convertPoint(contact.contactPoint, fromNode: self)
                 
                 if circle.circleColor == colorSelector.colorAtPosition(location) {
-                    ++score
+                    score += 1
                     circle.willArrive()
                 } else {
                     // GameOver

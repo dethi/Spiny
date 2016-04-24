@@ -28,8 +28,8 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
         // Setup Game Center
         
         authenticateLocalPlayer()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "showLeaderboards", name: showGameCenterKey, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveScore", name: saveScoreKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.showLeaderboards), name: showGameCenterKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.saveScore as (GameViewController) -> () -> ()), name: saveScoreKey, object: nil)
 
         // Setup SpriteKit Scene
         
@@ -52,8 +52,8 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
         } catch _ {
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleAudioSetting", name: AVAudioSessionSilenceSecondaryAudioHintNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleAudioSetting", name: changeAudioSettingKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.handleAudioSetting), name: AVAudioSessionSilenceSecondaryAudioHintNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.handleAudioSetting), name: changeAudioSettingKey, object: nil)
         
         soundsPlaylist.reserveCapacity(3)
         
@@ -97,7 +97,7 @@ class GameViewController: UIViewController, AVAudioPlayerDelegate, GKGameCenterC
     }
     
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
-        currentSoundsIndex = ++currentSoundsIndex % soundsPlaylist.count
+        currentSoundsIndex = (currentSoundsIndex + 1) % soundsPlaylist.count
         playCurrentSound()
     }
     

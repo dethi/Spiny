@@ -48,9 +48,9 @@ class ColorSelectorNode: SKSpriteNode {
         if position.y < -delta { // bottom
             color += 2
         } else if position.x > delta { // right
-            ++color
+            color += 1
         } else if position.x < -delta { // left
-            --color
+            color -= 1
         }
         
         switch (mod(color, m: 4)) {
