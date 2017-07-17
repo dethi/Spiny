@@ -6,3 +6,9 @@ Spiny is a minimal and addictive spinning game.
 * Challenge your friends.
 * Reach the top of the leaderboard.
 * No in-app purchase.
+
+## Preview
+
+| ![Screenshot](Screenshots/screenshot-1.jpg) | ![Screenshot](Screenshots/screenshot-2.jpg) |
+|:---:|:---:|
+| Home view | Game view |
